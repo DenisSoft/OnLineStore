@@ -44,6 +44,7 @@ public class CreateCategoryServlet extends HttpServlet {
                 jspName = "error.jsp";
             }
         }
+        getServletContext().setAttribute("category", CategoryService.getInstance().getAll());
         requestDispatcher
                 = getServletContext().getRequestDispatcher("/WEB-INF/jsp/" + jspName);
         requestDispatcher.forward(req, resp);

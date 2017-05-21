@@ -5,32 +5,40 @@
   Time: 21:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="jstl-connect.jsp" %>
 <jsp:useBean id="product" class="entity.Product" scope="request">
     <jsp:setProperty name="product" property="*"/>
 </jsp:useBean>
 
 <html>
 <body>
-<form action="${pageContext.request.contextPath}/CreateProduct" method="post">
-    <center>
-        <table cellpadding=4 cellspacing=2 border=0>
-
-            <th bgcolor="#CCCCFF" colspan=2>
-                <font size=5>ДОБАВЛЕНИЕ ПРОДУКТА</font>
-                <br/>
-                <font size=1>* Обязательное поле для заполнения</font>
+<%@include file="header.jsp" %>
+<br/>
+<div class="container" style=width:700px>
+    <form action="${pageContext.request.contextPath}/CreateProduct" method="post">
+        <table class="table table-condensed">
+            <thead>
+            <th bgcolor="#99CC99" colspan=2>
+                <center>
+                    <font size=5>ДОБАВЛЕНИЕ ПРОДУКТА</font>
+                    <br/>
+                    <font size=1>* Обязательное поле для заполнения</font>
+                </center>
             </th>
-
-            <tr bgcolor="#c8d8f8">
+            </thead>
+            <tr bgcolor="#CCFFCC">
                 <td valign=top>
                     Выберите категорию*
 
-                    <input type="text" name="categoryId"
-                           value='<%=product.getCategoryId()%>' size=30 maxlength=30>
+                    <select name="category.id">
+                        <c:forEach items="${requestScope.categories}" var="category">
+                            <option value="${category.id}">${category.categoryName}</option>
+                        </c:forEach>
+                    </select>
+
                     <br/>
                     <font size=2
-                          color=red><%=product.getErrorMsg("categoryId")%>
+                          color=red><%=product.getErrorMsg("category")%>
                     </font>
                 </td>
                 <td valign=top>
@@ -45,23 +53,24 @@
                 </td>
             </tr>
 
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td valign=top colspan=2>
                     Описание*
+
                     <br/>
-                    <input type="text" name="description" value='<%=product.getDescription()%>'
-                           size=100 maxlength=100>
+                    <textarea cols="91" rows="5" name="description">
+                        <c:out value="<%=product.getDescription()%>"/>
+                    </textarea>
                     <br/>
                     <font size=2 color=red><%=product.getErrorMsg("description")%>
                     </font>
                 </td>
             </tr>
-
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td valign=top>
                     Цена*
 
-                    <input type="text" name="price" size=10
+                    <input type="number" name="price" size=10
                            value='<%=product.getPrice()%>' maxlength=10>
                     <br/>
                     <font size=2
@@ -71,7 +80,7 @@
                 <td valign=top>
                     Количество*
 
-                    <input type="text" name="residue" size=10
+                    <input type="number" name="residue" size=10
                            value='<%=product.getResidue()%>' maxlength=10>
                     <br/>
                     <font size=2
@@ -80,14 +89,14 @@
                 </td>
 
             </tr>
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td colspan=2 align=center>
-                    <input type="submit" value="Сохранить"> <input type="reset"
-                                                                   value="Очистить">
+                    <input type="submit" value="Сохранить"> <input type="reset" value="Очистить">
                 </td>
             </tr>
         </table>
-    </center>
-</form>
+    </form>
+</div>
+<%@include file="footer.jsp" %>
 </body>
 </html>

@@ -5,60 +5,63 @@
   Time: 21:44
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="jstl-connect.jsp"%>
 <jsp:useBean id="product" class="entity.Product" scope="request"/>
-
 <html>
 <body>
-<center>
-    <table cellpadding=4 cellspacing=2 border=0>
-
-        <th bgcolor="#CCCCFF" colspan=2>
+<%@include file="header.jsp" %>
+<br/>
+<div class="container" style=width:500px>
+    <table class="table table-condensed">
+        <thead>
+        <th bgcolor="#99CC99" colspan=2>
+            <center>
             <font size=5>ВЫ УСПЕШНО ДОБАВИЛИ ПРОДУКТ!</font>
-            <br />
-            <font size=2>Регистрационный номер № <%=product.getId()%></font>
-
+            <br/>
+            <font size=2>Регистрационный номер № <%=product.getId()%>
+            </font>
+            </center>
         </th>
-
+        </thead>
         <font size=4>
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td valign=top>
                     Категория:
-                    <br />
-                    <jsp:getProperty name="product" property="categoryId"/>
+                    <br/>
+                    <jsp:getProperty name="product" property="category"/>
                 </td>
                 <td valign=top>
                     Название:
-                    <br />
+                    <br/>
                     <jsp:getProperty name="product" property="productName"/>
                 </td>
             </tr>
 
-            <tr bgcolor="#c8d8f8">
-                <td valign=top colspan=2>
+            <tr bgcolor="#CCFFCC">
+                <td valign=top colspan=2 style="width:300px;">
                     Описание:
-                    <br />
+                    <br/>
                     <jsp:getProperty name="product" property="description"/>
                 </td>
             </tr>
 
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td valign=top>
                     Цена:
-                    <br />
+                    <br/>
                     <jsp:getProperty name="product" property="price"/>
+                    руб.
                 </td>
                 <td valign=top>
-                    Количество:
-                    <br />
+                    Остаток:
+                    <br/>
                     <jsp:getProperty name="product" property="residue"/>
+                    шт.
                 </td>
             </tr>
-
-            </tr>
-
         </font>
     </table>
-</center>
+</div>
+<%@include file="footer.jsp" %>
 </body>
 </html>

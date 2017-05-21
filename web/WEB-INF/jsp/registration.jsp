@@ -11,87 +11,87 @@
 </jsp:useBean>
 
 <html>
+<head>
+    <title>Регистрация</title>
+</head>
 <body>
-<form action="${pageContext.request.contextPath}/Registration" method="post">
-    <center>
-        <table cellpadding=4 cellspacing=2 border=0>
-
-            <th bgcolor="#CCCCFF" colspan=2>
+<%@include file="header.jsp"%>
+<div class="container" style=width:500px>
+      <form action="${pageContext.request.contextPath}/Registration" method="post">
+        <table class="table table-condensed">
+            <thead>
+            <th bgcolor="#99CC99" colspan=2>
+                <center>
                 <font size=5>РЕГИСТРАЦИЯ</font>
                 <br/>
                 <font size=1>* Обязательное поле для заполнения</font>
+                </center>
             </th>
-
-            <tr bgcolor="#c8d8f8">
-                <td valign=top>
+            </thead>
+            <tbody>
+            <tr bgcolor="#CCFFCC">
+                <td >
                     Имя*
-
                     <input type="text" name="firstName"
-                           value='<%=person.getFirstName()%>' size=22 maxlength=22>
+                           value='<%=person.getFirstName()%>' size=23 maxlength=20>
                     <br/>
                     <font size=2
                           color=red><%=person.getErrorMsg("firstName")%>
                     </font>
                 </td>
-                <td valign=top>
+                <td>
                     Фамилия*
-
                     <input type="text" name="lastName"
-                           value='<%=person.getLastName()%>' size=24 maxlength=24>
+                           value='<%=person.getLastName()%>' size=33 maxlength=20>
                     <br/>
                     <font size=2
                           color=red><%=person.getErrorMsg("lastName")%>
                     </font>
                 </td>
             </tr>
-
-            <tr bgcolor="#c8d8f8">
-                <td valign=top>
+            <tr bgcolor="#CCFFCC">
+                <td>
                     E-Mail*
 
                     <input type="text" name="email" value='<%=person.getEmail()%>'
-                           size=20 maxlength=20>
+                           size=23 maxlength=20>
                     <br/>
                     <font size=2 color=red><%=person.getErrorMsg("email")%>
                     </font>
                 </td>
-                <td valign=top>
+                <td>
                     Мобильный телефон*
 
-                    <input type="text" name="phone" value='<%=person.getPhone()%>' size=13
+                    <input type="text" name="phone" value='<%=person.getPhone()%>' size=33
                            maxlength=20>
                     <br/>
                     <font size=2 color=red><%=person.getErrorMsg("phone")%>
                     </font>
                 </td>
             </tr>
-
-            <tr bgcolor="#c8d8f8">
-                <td valign=top colspan=2>
+            <tr bgcolor="#CCFFCC">
+                <td colspan=2>
                     Адрес*
-                    <input type="text" name="address" value='<%=person.getAddress()%>' size=62 maxlength=62>
+                    <input type="text" name="address" value='<%=person.getAddress()%>' size=62 maxlength=40>
                     <br/>
                     <font size=2 color=red><%=person.getErrorMsg("address")%>
                     </font>
                 </td>
             </tr>
-
-            <tr bgcolor="#c8d8f8">
-                <td valign=top>
-                    Пароль*
-
-                    <input type="password" name="password" size=10
-                           value='<%=person.getPassword()%>' maxlength=10>
+            <tr bgcolor="#CCFFCC">
+                <td >
+                    <font size=3px>Пароль*</font>
+                    <input type="password" name="password" size=12
+                           value='<%=person.getPassword()%>' maxlength=12>
                     <br/>
                     <font size=2
                           color=red><%=person.getErrorMsg("password")%>
                     </font>
                 </td>
                 <td valign=top>
-                    Подтвердите пароль*
-
-                    <input type="password" name="password1" size=10
-                           value='<%=person.getPassword1()%>' maxlength=10>
+                    <font size=3px>Подтвердите пароль*</font>
+                    <input type="password" name="password1" size=12
+                           value='<%=person.getPassword1()%>' maxlength=12>
                     <br/>
                     <font size=2
                           color=red><%=person.getErrorMsg("password1")%>
@@ -99,15 +99,15 @@
                 </td>
 
             </tr>
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td colspan=2 align=center>
-                    <input type="submit" value="Сохранить"> <input type="reset"
-                                                                   value="Очистить">
+                    <input type="submit" value="Сохранить"> <input type="reset" value="Очистить">
                 </td>
             </tr>
-
+            </tbody>
         </table>
-    </center>
-</form>
+       </form>
+</div>
+<%@include file="footer.jsp"%>
 </body>
 </html>

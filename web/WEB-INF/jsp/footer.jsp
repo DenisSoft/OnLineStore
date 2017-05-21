@@ -5,5 +5,9 @@
   Time: 9:45
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<title> Copyright © 2017 все права защищены. </title>
+<nav class="navbar navbar-fixed-bottom navbar-inverse" bgcolor="#00FF00">
+    <div class="container"><br/>
+        <font size=2 color=#FFFFFF>Copyright © 2017 DenisSoft все права защищены.</font>
+    </div>
+</nav>
+

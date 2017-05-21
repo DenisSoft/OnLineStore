@@ -5,44 +5,48 @@
   Time: 19:58
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="jstl-connect.jsp"%>
 <jsp:useBean id="category" class="entity.Category" scope="request">
     <jsp:setProperty name="category" property="*"/>
 </jsp:useBean>
 
 <html>
 <body>
+<%@include file="header.jsp"%>
+<br/>
+<div class="container" style=width:500px>
 <form action="${pageContext.request.contextPath}/CreateCategory" method="post">
-    <center>
-        <table cellpadding=4 cellspacing=2 border=0>
-
-            <th bgcolor="#CCCCFF" colspan=2>
+        <table class="table table-condensed">
+            <thead>
+            <th bgcolor="#99CC99" colspan=2>
+                <center>
                 <font size=5>СОЗДАНИЕ КАТЕГОРИИ</font>
                 <br/>
                 <font size=1>* Обязательное поле для заполнения</font>
+                </center>
             </th>
-
-            <tr bgcolor="#c8d8f8">
+            </thead>
+            <tr bgcolor="#CCFFCC">
                 <td valign=top>
                     НАЗВАНИЕ НОВОЙ КАТЕГОРИИ*
-
                     <input type="text" name="categoryName"
-                           value='<%=category.getCategoryName()%>' size=22 maxlength=22>
+                           value='<%=category.getCategoryName()%>' size=70 maxlength=70>
                     <br/>
                     <font size=2
                           color=red><%=category.getErrors()%>
                     </font>
                 </td>
             </tr>
-            <tr bgcolor="#c8d8f8">
+            <tr bgcolor="#CCFFCC">
                 <td colspan=2 align=center>
-                    <input type="submit" value="Сохранить"> <input type="reset"
-                                                                   value="Очистить">
+                    <input type="submit" value="Сохранить">
+                    <input type="reset" value="Очистить">
                 </td>
             </tr>
 
         </table>
-    </center>
 </form>
+</div>
+<%@include file="footer.jsp"%>
 </body>
 </html>
