@@ -6,8 +6,7 @@ import java.util.Map;
 /**
  * Created by Dzianis on 28.03.2017.
  */
-public class Person {
-    private long id;
+public class Person extends BaseEntity{
     private String firstName;
     private String lastName;
     private String email;
@@ -42,8 +41,8 @@ public class Person {
     }
 
     public Person(long id, String firstName, String lastName, String email,
-                  String password, String address, String phone, Groups groups) {
-        this.id = id;
+                       String password, String address, String phone, Groups groups) {
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -51,6 +50,31 @@ public class Person {
         this.address = address;
         this.phone = phone;
         this.groups = groups;
+    }
+
+    public Person(long id, String firstName, String lastName) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Person(long id) {
+        super(id);
+    }
+
+    public boolean validatePassword() {
+        boolean allOk = true;
+        if (email.equals("") || !email.matches("[a-zA-Z]\\w*@[a-zA-Z]+\\.[a-zA-Z]+")) {
+            errors.put("email", "Пожалуйста, введите свой E-Mail!");
+            email = "";
+            allOk = false;
+        }
+        if (password.equals("")) {
+            errors.put("password", "Пожалуйста, введите пароль!");
+            password = "";
+            allOk = false;
+        }
+        return allOk;
     }
 
     public boolean validate() {
@@ -99,11 +123,6 @@ public class Person {
         return (errorMsg == null) ? "" : errorMsg;
     }
 
-
-    public long getId() {
-        return id;
-    }
-
     public Map getErrors() {
         return errors;
     }
@@ -112,8 +131,8 @@ public class Person {
         this.errors = errors;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getName() {
+        return firstName +" " + lastName;
     }
 
     public String getFirstName() {
@@ -187,18 +206,18 @@ public class Person {
 
         Person person = (Person) o;
 
-        return id == person.id;
+        return getId() == person.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

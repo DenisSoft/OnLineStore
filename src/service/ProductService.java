@@ -47,4 +47,8 @@ public class ProductService {
     public List<Product> getAll() {
         return ProductDao.getInstance().getAll();
     }
+
+    public List<Product> allProductByCategory(long id) {
+        return ProductDao.getInstance().allProductByCategory(id);
+    }
 }

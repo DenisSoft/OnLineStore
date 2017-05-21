@@ -1,4 +1,5 @@
 package dao;
+
 import connection.ConnectionManager;
 import entity.Groups;
 import entity.Person;
@@ -27,7 +28,7 @@ public class PersonDao {
     }
 
     public static boolean delete(long id) {
-        try(Connection connection = ConnectionManager.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT id FROM customer_order WHERE person_id = ?")) {
@@ -37,7 +38,7 @@ public class PersonDao {
                     return false;
                 }
             }
-            try(PreparedStatement preparedStatement = connection.prepareStatement(
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM person WHERE id = ?")) {
                 preparedStatement.setLong(1, id);
                 preparedStatement.executeUpdate();
@@ -53,8 +54,8 @@ public class PersonDao {
         try (Connection connection = ConnectionManager.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT p.id, first_name, lastName, email, password, address, phone, groups_name " +
-                         "FROM person AS p JOIN groups AS g ON p.groups_id = g.id " +
-                          "WHERE p.id = ?")) {
+                            "FROM person AS p JOIN groups AS g ON p.groups_id = g.id " +
+                            "WHERE p.id = ?")) {
                 preparedStatement.setLong(1, id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
@@ -67,7 +68,7 @@ public class PersonDao {
         return Optional.empty();
     }
 
-    private static Person creatPerson(ResultSet resultSet){
+    private static Person creatPerson(ResultSet resultSet) {
         try {
             return new Person(resultSet.getLong("id"),
                     resultSet.getString("first_name"),
@@ -80,7 +81,7 @@ public class PersonDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    return null;
+        return null;
     }
 
     public static Optional<Person> save(Person person) {
@@ -126,6 +127,32 @@ public class PersonDao {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static Optional<Person> getByEmailAndPassword(Person person) {
+        try (Connection connection = ConnectionManager.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT p.id, first_name, lastName, email, password, address, phone, groups_name " +
+                            "FROM person AS p JOIN groups AS g ON p.groups_id = g.id " +
+                            "WHERE p.email = ? AND p.password = ? ")) {
+                preparedStatement.setString(1, person.getEmail());
+                preparedStatement.setString(2, person.getPassword());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    person.setId(resultSet.getLong("id"));
+                    person.setFirstName(resultSet.getString("first_name"));
+                    person.setLastName(resultSet.getString("lastName"));
+                    person.setAddress(resultSet.getString("address"));
+                    person.setPassword(resultSet.getString("password"));
+                    person.setPhone(resultSet.getString("phone"));
+                    person.setGroups(Groups.valueOf(resultSet.getString("groups_name")));
+                    return Optional.of(person);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 }
 

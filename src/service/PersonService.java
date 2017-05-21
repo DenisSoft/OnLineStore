@@ -3,6 +3,7 @@ package service;
 import dao.PersonDao;
 import entity.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,16 +29,26 @@ public class PersonService {
         return PersonDao.getInstance().delete(id);
     }
 
-    public static Optional<Person> getById(long id) {
+    public static List<Person> getById(long id) {
+        List<Person> personList = null;
         Optional<Person> fullInfo = PersonDao.getInstance().getById(id);
+        if (fullInfo.isPresent()) {
+            personList = new ArrayList<>();
+            personList.add(fullInfo.get());
+        }
+        return personList;
+    }
+
+    public static Optional<Person> save(Person person) {
+        Optional<Person> fullInfo = PersonDao.getInstance().save(person);
         if (fullInfo.isPresent()) {
             return fullInfo;
         }
         return Optional.empty();
     }
 
-    public static Optional<Person> save(Person person) {
-        Optional<Person> fullInfo = PersonDao.getInstance().save(person);
+    public static Optional<Person> getByEmailAndPassword(Person person) {
+        Optional<Person> fullInfo = PersonDao.getInstance().getByEmailAndPassword(person);
         if (fullInfo.isPresent()) {
             return fullInfo;
         }

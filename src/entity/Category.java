@@ -3,11 +3,9 @@ package entity;
 /**
  * Created by Dzianis on 07.04.2017.
  */
-public class Category {
-    private long id;
+public class Category extends BaseEntity{
     private String categoryName;
     private String errors;
-
 
     public Category() {
         this.categoryName = "";
@@ -19,7 +17,7 @@ public class Category {
     }
 
     public Category(long id, String categoryName) {
-        this.id = id;
+        super(id);
         this.categoryName = categoryName;
     }
 
@@ -29,14 +27,6 @@ public class Category {
             return false;
         }
         return true;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getCategoryName() {
@@ -62,19 +52,16 @@ public class Category {
 
         Category category = (Category) o;
 
-        return id == category.id;
+        return getId() == category.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", categoryName='" + categoryName + '\'' +
-                '}';
+        return categoryName;
     }
 }

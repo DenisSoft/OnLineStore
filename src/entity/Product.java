@@ -6,44 +6,47 @@ import java.util.Map;
 /**
  * Created by Dzianis on 28.03.2017.
  */
-public class Product {
-    private long id;
-    private long categoryId;
+public class Product extends BaseEntity{
+    private Category category;
     private String productName;
     private String description;
-    private double price;
+    private int price;
     private int residue;
     private Map errors;
 
     public Product() {
-        this.categoryId = 0;
+        this.category = new Category();
         this.productName = "";
         this.description = "";
-        this.price = 0;
-        this.residue = 0;
         this.errors = new HashMap();
     }
 
     public Product(long id) {
-        this.id = id;
+        super(id);
     }
 
     public Product(long id, String productName) {
-        this.id = id;
+        super(id);
         this.productName = productName;
     }
 
-    public Product(long categoryId, String productName, String description, double price, int residue) {
-        this.categoryId = categoryId;
+    public Product(Long id, String productName, int price) {
+        super(id);
+        this.productName = productName;
+        this.price = price;
+    }
+
+    public Product(Category category, String productName, String description, int price, int residue) {
+        this.category = category;
         this.productName = productName;
         this.description = description;
         this.price = price;
         this.residue = residue;
     }
 
-    public Product(long id, long categoryId, String productName, String description, double price, int residue) {
-        this.id = id;
-        this.categoryId = categoryId;
+    public Product(Long id, Category category, String productName, String description, int price, int residue) {
+        super(id);
+        this.category = category;
         this.productName = productName;
         this.description = description;
         this.price = price;
@@ -52,9 +55,10 @@ public class Product {
 
     public boolean validate() {
         boolean allOk = true;
-        if (categoryId == 0) {
-            errors.put("categoryId", "Пожалуйста, выберите категорию!");
-            categoryId = 0;
+        setDescription(description.trim());
+        if (category.getCategoryName().equals("")) {
+            errors.put("category", "Пожалуйста, выберите категорию!");
+            category.setCategoryName("");
             allOk = false;
         }
         if (productName.equals("")) {
@@ -85,20 +89,12 @@ public class Product {
         return (errorMsg == null) ? "" : errorMsg;
     }
 
-    public long getId() {
-        return id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getProductName() {
@@ -117,11 +113,11 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -140,23 +136,24 @@ public class Product {
 
         Product product = (Product) o;
 
-        return id == product.id;
+        return getId() == product.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", categoryId=" + categoryId +
+        return "ProductServlet{" +
+                "id=" + getId() +
+                ", category=" + category +
                 ", productName='" + productName + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", residue=" + residue +
+                ", errors=" + errors +
                 '}';
     }
 }

@@ -1,64 +1,70 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Dzianis on 28.03.2017.
  */
-public class CustomerOrder {
-    private long id;
-    private Long personId;
+public class CustomerOrder extends BaseEntity{
+    private Person person;
     private Map<Product, Integer> orderItem;
     private LocalDate dateCreated;
     private LocalDate dateClosing;
     private OrderStatus orderStatus;
+    private String errors;
 
-    public CustomerOrder(long id, Long personId, Map<Product, Integer> orderItem) {
-        this.id = id;
-        this.personId = personId;
+    public CustomerOrder(Person person) {
+        this.person = person;
+        this.orderItem = new HashMap<Product, Integer>();
+    }
+
+    public CustomerOrder(long id, Person person, Map<Product, Integer> orderItem) {
+        super(id);
+        this.person = person;
         this.orderItem = orderItem;
     }
 
-    public CustomerOrder(long id, Long personId, Map<Product, Integer> orderItem, LocalDate dateCreated, OrderStatus orderStatus) {
-        this.id = id;
-        this.personId = personId;
+    public CustomerOrder(long id, Person person, Map<Product, Integer> orderItem, LocalDate dateCreated, OrderStatus orderStatus) {
+        super(id);
+        this.person = person;
         this.orderItem = orderItem;
         this.dateCreated = dateCreated;
         this.orderStatus = orderStatus;
     }
 
-    public CustomerOrder(long id, Long personId, LocalDate dateCreated, LocalDate dateClosing, OrderStatus orderStatus) {
-        this.id = id;
-        this.personId = personId;
-        this.dateCreated = dateCreated;
-        this.dateClosing = dateClosing;
-        this.orderStatus = orderStatus;
-    }
-
-    public CustomerOrder(long id, Long personId, Map<Product, Integer> orderItem, LocalDate dateCreated, LocalDate dateClosing, OrderStatus orderStatus) {
-        this.id = id;
-        this.personId = personId;
-        this.orderItem = orderItem;
+    public CustomerOrder(long id, Person person, LocalDate dateCreated, LocalDate dateClosing, OrderStatus orderStatus) {
+        super(id);
+        this.person = person;
         this.dateCreated = dateCreated;
         this.dateClosing = dateClosing;
         this.orderStatus = orderStatus;
     }
 
-    public long getId() {
-        return id;
+    public CustomerOrder(long id, Person person, Map<Product, Integer> orderItem, LocalDate dateCreated, LocalDate dateClosing, OrderStatus orderStatus) {
+        super(id);
+        this.person = person;
+        this.orderItem = orderItem;
+        this.dateCreated = dateCreated;
+        this.dateClosing = dateClosing;
+        this.orderStatus = orderStatus;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getErrors() {
+        return errors;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public void setErrors(String errors) {
+        this.errors = errors;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Map<Product, Integer> getOrderItem() {
@@ -93,30 +99,38 @@ public class CustomerOrder {
         this.orderStatus = orderStatus;
     }
 
+    public long orderPrice(){
+        long number = 0;
+        for (Map.Entry<Product, Integer> entry : orderItem.entrySet()) {
+            number += entry.getKey().getPrice() * entry.getValue();
+        }
+        return number;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CustomerOrder that = (CustomerOrder) o;
+        CustomerOrder customerOrder = (CustomerOrder) o;
 
-        return id == that.id;
+        return getId() == customerOrder.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override
     public String toString() {
         return "CustomerOrder{" +
-                "id=" + id +
-                ", personId=" + personId +
+                "person=" + person +
                 ", orderItem=" + orderItem +
                 ", dateCreated=" + dateCreated +
                 ", dateClosing=" + dateClosing +
                 ", orderStatus=" + orderStatus +
+                ", errors='" + errors + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import connection.ConnectionManager;
+import entity.Category;
 import entity.Product;
 
 import java.sql.*;
@@ -53,11 +54,13 @@ public class ProductDao {
     public static Optional<Product> getById(long id) {
         try (Connection connection = ConnectionManager.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM product WHERE id = ?")) {
+                    " SELECT p.id, product_name, description, category_id, category_name, price, " +
+                            "residue FROM product AS p JOIN category AS c ON category_id = c.id " +
+                            "WHERE p.id = ?")) {
                 preparedStatement.setLong(1, id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    return Optional.of(creatPerson(resultSet));
+                    return Optional.of(creatProduct(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -72,7 +75,7 @@ public class ProductDao {
                     "INSERT INTO product (category_id, product_name, description, price, residue)" +
                             "VALUES (?, ?, ?, ?, ?);",
                     Statement.RETURN_GENERATED_KEYS)) {
-                preparedStatement.setLong(1, product.getCategoryId());
+                preparedStatement.setLong(1, product.getCategory().getId());
                 preparedStatement.setString(2, product.getProductName());
                 preparedStatement.setString(3, product.getDescription());
                 preparedStatement.setDouble(4, product.getPrice());
@@ -90,13 +93,14 @@ public class ProductDao {
         return Optional.empty();
     }
 
-    private static Product creatPerson(ResultSet resultSet) {
+    private static Product creatProduct(ResultSet resultSet) {
         try {
             return new Product(resultSet.getLong("id"),
-                    resultSet.getLong("category_id"),
+                    new Category(resultSet.getLong("category_id"),
+                            resultSet.getString("category_name")),
                     resultSet.getString("product_name"),
                     resultSet.getString("description"),
-                    resultSet.getDouble("price"),
+                    resultSet.getInt("price"),
                     resultSet.getInt("residue"));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,10 +112,31 @@ public class ProductDao {
         List<Product> list = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM product")) {
+                    "SELECT p.id, product_name, description, category_id, category_name, " +
+                            "price, residue FROM product AS p JOIN category AS c ON category_id = c.id;")) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        list.add(creatPerson(resultSet));
+                        list.add(creatProduct(resultSet));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Product> allProductByCategory(long id) {
+        List<Product> list = new ArrayList<>();
+        try (Connection connection = ConnectionManager.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT p.id, product_name, description, category_id, category_name, price, residue " +
+                            "FROM product AS p JOIN category AS c ON category_id = c.id " +
+                            "WHERE category_id = ?")) {
+                preparedStatement.setLong(1, id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        list.add(creatProduct(resultSet));
                     }
                 }
             }
